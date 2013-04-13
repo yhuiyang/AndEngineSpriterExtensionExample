@@ -1,7 +1,7 @@
 /*
  * Spriter Extension for AndEngine
  *
- * Copyright (c) 2012 Arturo Gutiérrez
+ * Copyright (c) 2012 Arturo Guti√©rrez
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,21 +34,19 @@ import org.andengine.extension.spriter.SpriterEntity;
 import org.andengine.extension.spriter.SpriterLoader;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-import android.util.DisplayMetrics;
-
 public class ExampleActivity extends SimpleBaseGameActivity {
 
+    private final float CAMERA_WIDTH = 480.0f;
+    private final float CAMERA_HEIGHT = 800.0f;
     private Scene mMainScene;
     private SpriterEntity mSprite;
-    
+
     @Override
     public EngineOptions onCreateEngineOptions() {
-        // Create Metrics object
-        DisplayMetrics metrics = new DisplayMetrics();
-        // Fill metrics object
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        // Create canera
-        Camera camera = new Camera(0, 0, metrics.widthPixels, metrics.heightPixels);
+        // Create camera
+        Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        // Make camera center = origin, so the scene looks like canvas UI in Spriter
+        camera.setCenter(0, 0);
 
         // Return engine options
         return new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new RatioResolutionPolicy(camera.getWidth() / camera.getHeight()), camera);
@@ -66,16 +64,20 @@ public class ExampleActivity extends SimpleBaseGameActivity {
     protected Scene onCreateScene() {
         // Create empty Scene
         mMainScene = new Scene();
-        
+
         if (mSprite != null) {
-            // Move Sprite
-            mSprite.setPosition(mEngine.getCamera().getWidth() / 2, mEngine.getCamera().getHeight() / 2);
-            mSprite.setAnimation(1);
+            // There are two animation defined in the Spriter, choose anyone by index or name.
+            // Animations: Idle(0), Posture(1)
+            mSprite.setAnimation(0);
+            // mSprite.setAnimation(1);
+            // mSprite.setAnimation("idle");
+            // mSprite.setAnimation("posture");
+
             // Attach sprite
             mMainScene.attachChild(mSprite);
         }
-        
-        
+
+
         return mMainScene;
     }
 
