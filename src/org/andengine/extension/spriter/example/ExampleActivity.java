@@ -41,6 +41,7 @@ public class ExampleActivity extends SimpleBaseGameActivity {
     private final float CAMERA_HEIGHT = 800.0f;
     private Scene mMainScene;
     private SpriterEntity mSprite;
+    private SpriterEntity mSprite2;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -59,6 +60,11 @@ public class ExampleActivity extends SimpleBaseGameActivity {
         mSprite = SpriterLoader.createSpriterFrom(this, "example.scml");
         // Load textures
         mSprite.loadResources(this, getTextureManager(), getVertexBufferObjectManager());
+
+        // Create sprite
+        mSprite2 = SpriterLoader.createSpriterFrom(this, "example.scml");
+        // Load textures
+        mSprite2.loadResources(this, getTextureManager(), getVertexBufferObjectManager());
     }
 
     @Override
@@ -76,6 +82,20 @@ public class ExampleActivity extends SimpleBaseGameActivity {
 
             // Attach sprite
             mMainScene.attachChild(mSprite);
+        }
+
+        if (mSprite2 != null) {
+            mSprite2.setY(-400);
+            // There are two animation defined in the Spriter, choose anyone by
+            // index or name.
+            // Animations: Idle(0), Posture(1)
+            mSprite2.setAnimation(1);
+            // mSprite.setAnimation(1);
+            // mSprite.setAnimation("idle");
+            // mSprite.setAnimation("posture");
+
+            // Attach sprite
+            mMainScene.attachChild(mSprite2);
         }
 
         if (BuildConfig.DEBUG)
