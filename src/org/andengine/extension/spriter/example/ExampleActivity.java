@@ -29,19 +29,22 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.spriter.SpriterEntity;
 import org.andengine.extension.spriter.SpriterLoader;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class ExampleActivity extends SimpleBaseGameActivity {
+public class ExampleActivity extends SimpleBaseGameActivity implements IOnSceneTouchListener {
 
     private final float CAMERA_WIDTH = 480.0f;
     private final float CAMERA_HEIGHT = 800.0f;
     private Scene mMainScene;
     private SpriterEntity mSprite;
     private SpriterEntity mSprite2;
+    private int animationId = 0;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -71,6 +74,7 @@ public class ExampleActivity extends SimpleBaseGameActivity {
     protected Scene onCreateScene() {
         // Create empty Scene
         mMainScene = new Scene();
+        mMainScene.setOnSceneTouchListener(this);
 
         if (mSprite != null) {
             // There are two animation defined in the Spriter, choose anyone by index or name.
@@ -102,6 +106,16 @@ public class ExampleActivity extends SimpleBaseGameActivity {
             this.getEngine().registerUpdateHandler(new FPSLogger());
 
         return mMainScene;
+    }
+
+    @Override
+    public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+        if (pSceneTouchEvent.isActionDown()) {
+            animationId ^= 1;
+            mSprite.setAnimation(animationId);
+            mSprite2.setAnimation(animationId ^ 1);
+        }
+        return false;
     }
 
 }
